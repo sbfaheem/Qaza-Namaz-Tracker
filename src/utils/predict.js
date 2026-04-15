@@ -43,7 +43,7 @@ export const calculateETA = (user) => {
 
   let timeComponents = [];
   if (years > 0) timeComponents.push(`${years} ${years === 1 ? 'Year' : 'Years'}`);
-  if (months > 0) timeComponents.push(`${months} ${months === 1 ? 'Mth' : 'Mths'}`);
+  if (months > 0) timeComponents.push(`${months} ${months === 1 ? 'Month' : 'Months'}`);
   if (days > 0 || timeComponents.length === 0) timeComponents.push(`${days} ${days === 1 ? 'Day' : 'Days'}`);
 
   // Calculate future completion date
