@@ -21,7 +21,7 @@ export const Onboarding = ({ onComplete }) => {
   return (
     <div className="onboarding-container container">
       <div className="onboarding-header">
-        <h2 className="section-title">Welcome to Al-Mihrab</h2>
+        <h2 className="section-title">Welcome to Qaza Namaz Tracker</h2>
         <p className="section-subtitle">Let's calculate your prayer journey</p>
       </div>
 

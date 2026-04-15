@@ -12,7 +12,7 @@ export const Navbar = ({ currentUserId }) => {
              <path d="M12 12L20 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
              <path d="M12 12L4 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
            </svg>
-           <h1 className="brand-name">Al-Mihrab</h1>
+           <h1 className="brand-name">Qaza Namaz Tracker</h1>
         </div>
         <div className="user-profile">
           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUserId || 'guest'}`} alt="avatar" className="avatar" />

@@ -11,7 +11,7 @@ export const downloadQazaReport = (user) => {
   // Header
   doc.setFontSize(22);
   doc.setTextColor(0, 75, 52); // Islamic Green
-  doc.text('Al-Mihrab Qaza Tracker Report', 20, 30);
+  doc.text('Qaza Namaz Tracker Report', 20, 30);
 
   doc.setFontSize(12);
   doc.setTextColor(100, 100, 100);

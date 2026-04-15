@@ -63,7 +63,7 @@ export const AuthScreen = () => {
            </svg>
         </div>
         
-        <h1 className="brand-name" style={{ marginBottom: '8px' }}>Al-Mihrab</h1>
+        <h1 className="brand-name" style={{ marginBottom: '8px' }}>Qaza Namaz Tracker</h1>
         <p className="section-subtitle" style={{ marginBottom: '24px' }}>Track your spiritual journey</p>
 
         {error && <div className="error-message" style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.9rem' }}>{error}</div>}
