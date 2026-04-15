@@ -4,6 +4,7 @@ import { AuthScreen } from './components/Auth';
 import { Onboarding } from './components/Onboarding';
 import { Navbar, BottomNav } from './components/Navigation';
 import { Dashboard, Journey } from './components/Views';
+import { ReportView } from './components/ReportView';
 import { fetchUserData, initializeUserRecord, persistUserData } from './utils/firestore';
 import { downloadQazaReport } from './utils/export';
 import { getRandomQuote } from './utils/quotes';
@@ -191,6 +192,7 @@ function App() {
           />
         )}
         {activeTab === 'journey' && <Journey user={userData} />}
+        {activeTab === 'report' && <ReportView user={userData} />}
         {activeTab === 'settings' && (
           <div className="settings-view container">
             <h2 className="section-title">Settings</h2>

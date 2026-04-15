@@ -1,5 +1,4 @@
-import React from 'react';
-import { Home, PlusCircle, BarChart2, Settings } from 'lucide-react';
+import { Home, PlusCircle, BarChart2, Settings, FileText } from 'lucide-react';
 
 export const Navbar = ({ currentUserId }) => {
   return (
@@ -26,6 +25,7 @@ export const BottomNav = ({ activeTab, setActiveTab }) => {
   const tabs = [
     { id: 'sanctuary', label: 'Sanctuary', icon: Home },
     { id: 'log', label: 'Log', icon: PlusCircle },
+    { id: 'report', label: 'Report', icon: FileText },
     { id: 'journey', label: 'Journey', icon: BarChart2 },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
