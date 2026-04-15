@@ -208,14 +208,6 @@ function App() {
             </div>
 
             <div className="settings-actions">
-              <button className="premium-card action-item" onClick={() => downloadQazaReport(userData)}>
-                <div className="action-icon">📄</div>
-                <div className="action-info">
-                  <span className="action-title">Download Qaza Report</span>
-                  <span className="action-desc">Get a detailed PDF of your progress</span>
-                </div>
-              </button>
-
               <button className="premium-card action-item" onClick={() => {
                 const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
                 document.documentElement.setAttribute('data-theme', theme);
