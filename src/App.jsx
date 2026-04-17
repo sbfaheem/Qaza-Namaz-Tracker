@@ -13,14 +13,14 @@ import './App.css';
 
 function AppContent() {
   const { currentUser: authUser, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, isRTL, language } = useLanguage();
   const [userData, setUserData] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
   const [activeTab, setActiveTab] = useState('sanctuary');
   const [toastMessage, setToastMessage] = useState('');
 
   const showQuote = () => {
-    setToastMessage(getRandomQuote());
+    setToastMessage(getRandomQuote(language));
     setTimeout(() => {
       setToastMessage('');
     }, 4500);
@@ -235,13 +235,13 @@ function AppContent() {
           <div className="container">
              <h2 className="section-title">{t('navLog')}</h2>
              <div className="premium-card">
-               {userData.dailyLogs.length === 0 ? (
+               {(userData.dailyLogs || []).length === 0 ? (
                  <p>{t('noActivity')}</p>
                ) : (
-                 userData.dailyLogs.slice().reverse().map((log, i) => (
+                 (userData.dailyLogs || []).slice().reverse().map((log, i) => (
                     <div key={i} className="log-entry" style={{ padding: '12px 0', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
                       <strong>{log.date}</strong>
-                      <span>{log.prayers.length} {t('completedShort')}</span>
+                      <span>{(log.prayers || []).length} {t('completedShort')}</span>
                     </div>
                  ))
                )}
