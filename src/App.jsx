@@ -23,7 +23,7 @@ function AppContent() {
     setToastMessage(getRandomQuote(language));
     setTimeout(() => {
       setToastMessage('');
-    }, 4500);
+    }, 10000);
   };
 
   useEffect(() => {
