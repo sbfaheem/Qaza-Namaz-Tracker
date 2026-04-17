@@ -42,9 +42,16 @@ export const calculateETA = (user) => {
   const days = Math.floor(remainingAfterYears % 30.44);
 
   let timeComponents = [];
-  if (years > 0) timeComponents.push(`${years} ${years === 1 ? 'Year' : 'Years'}`);
+  if (years > 0) timeComponents.push(`${years} ${years === 1 ? 'Year' : 'Years'}`); // We'll handle these in the component display if needed, or translate here
   if (months > 0) timeComponents.push(`${months} ${months === 1 ? 'Month' : 'Months'}`);
   if (days > 0 || timeComponents.length === 0) timeComponents.push(`${days} ${days === 1 ? 'Day' : 'Days'}`);
+  
+  // Revised for i18n
+  const yearsStr = years > 0 ? `${years} ${years === 1 ? t('year') : t('years')}` : '';
+  const monthsStr = months > 0 ? `${months} ${months === 1 ? t('month') : t('months')}` : '';
+  const daysStr = (days > 0 || (!years && !months)) ? `${days} ${days === 1 ? t('day') : t('days')}` : '';
+  
+  const finalTimeStr = [yearsStr, monthsStr, daysStr].filter(Boolean).join(', ');
 
   // Calculate future completion date
   const futureDate = new Date();
@@ -52,10 +59,10 @@ export const calculateETA = (user) => {
   const dateStr = futureDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 
   return {
-     isComplete: false,
+     isComplete: remainingDaysTotal <= 0,
      dateStr,
-     timeStr: timeComponents.join(', '),
-     avgPhrase,
+     timeStr: finalTimeStr,
+     avgPhrase: avgPerDay > 0 ? `${avgPerDay.toFixed(1)} ${t('navLog')}/${t('day')}` : t('navLog'),
      rawDays: remainingDaysTotal
   };
 };

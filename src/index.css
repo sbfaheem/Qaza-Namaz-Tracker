@@ -48,6 +48,37 @@ body {
   min-height: 100vh;
 }
 
+[dir='rtl'] body {
+  font-family: 'Noto Nastaliq Urdu', serif;
+}
+
+[dir='rtl'] .brand-name {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  line-height: 2;
+}
+
+[dir='rtl'] h1, [dir='rtl'] h2, [dir='rtl'] h3 {
+  line-height: 1.8;
+}
+
+[dir='rtl'] p, [dir='rtl'] span, [dir='rtl'] label, [dir='rtl'] input, [dir='rtl'] button {
+  line-height: 1.8;
+}
+
+[dir='rtl'] .modern-input {
+  text-align: right;
+}
+
+[dir='rtl'] .icon-indent {
+  padding-right: 48px !important;
+  padding-left: 14px !important;
+}
+
+[dir='rtl'] .input-icon {
+  right: 14px;
+  left: auto;
+}
+
 button {
   cursor: pointer;
   border: none;

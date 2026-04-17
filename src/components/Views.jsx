@@ -8,6 +8,7 @@ import {
   Tooltip, ResponsiveContainer, Cell, PieChart, Pie
 } from 'recharts';
 import { calculateETA } from '../utils/predict';
+import { useLanguage } from '../context/LanguageContext';
 
 /**
  * Common Card Component
@@ -29,6 +30,7 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color }) => (
  * Dashboard / Sanctuary View
  */
 export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerformMissed }) => {
+  const { t, isRTL } = useLanguage();
   const [activePopup, setActivePopup] = useState(null);
   const [showMissedModal, setShowMissedModal] = useState(false);
   const [showPerformMissedModal, setShowPerformMissedModal] = useState(false);
@@ -46,12 +48,12 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
   };
 
   const prayerInfos = {
-    fajr: { name: 'Fajr', rakats: 2, type: 'Fard' },
-    zuhr: { name: 'Zuhar', rakats: 4, type: 'Fard' },
-    asr: { name: 'Asr', rakats: 4, type: 'Fard' },
-    maghrib: { name: 'Maghrib', rakats: 3, type: 'Fard' },
-    isha: { name: 'Isha', rakats: 4, type: 'Fard' },
-    witr: { name: 'Witr', rakats: 3, type: 'Wajib' }
+    fajr: { name: t('fajr'), rakats: 2, type: 'Fard' },
+    zuhr: { name: t('zuhr'), rakats: 4, type: 'Fard' },
+    asr: { name: t('asr'), rakats: 4, type: 'Fard' },
+    maghrib: { name: t('maghrib'), rakats: 3, type: 'Fard' },
+    isha: { name: t('isha'), rakats: 4, type: 'Fard' },
+    witr: { name: t('witr'), rakats: 3, type: 'Wajib' }
   };
 
   const prayerIcons = {
@@ -68,25 +70,25 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
       {/* Progress Card */}
       <div className="premium-card progress-card main-highlight">
         <div className="progress-content">
-          <span className="progress-label">CURRENT SANCTUARY PROGRESS</span>
+          <span className="progress-label">{t('sanctuaryProgress')}</span>
           <div className="progress-main-value">
-            {progress}% <span className="completed-text">Complete</span>
+            {progress}% <span className="completed-text">{t('completeTitle')}</span>
           </div>
           <div className="progress-bar-bg">
             <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
           </div>
           <div className="progress-metrics" style={{ flexWrap: 'wrap' }}>
             <div className="metric">
-              <span className="metric-label">REMAINING</span>
+              <span className="metric-label">{t('remaining')}</span>
               <span className="metric-value">{(stats.total - stats.completed).toLocaleString()}</span>
             </div>
             <div className="metric">
-              <span className="metric-label">COMPLETED</span>
+              <span className="metric-label">{t('completed')}</span>
               <span className="metric-value">{stats.completed.toLocaleString()}</span>
             </div>
             {!prediction.isComplete && (
               <div className="metric" style={{ flexBasis: '100%', marginTop: '8px' }}>
-                <span className="metric-label">PREDICTED COMPLETION</span>
+                <span className="metric-label">{t('predictedCompletion')}</span>
                 <span className="metric-value" style={{ fontSize: '1.05rem', marginTop: '2px' }}>
                   {prediction.timeStr} <span style={{fontSize: '0.75rem', fontWeight: 'normal', opacity: 0.9}}>({prediction.avgPhrase})</span>
                 </span>
@@ -99,7 +101,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
 
       <div className="stats-grid">
         <StatCard 
-          title="TOTAL DEBTS" 
+          title={t('totalDebts')} 
           value={(stats.total - stats.completed).toLocaleString()} 
           icon={TrendingUp} 
           color="#004b34" 
@@ -118,7 +120,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
           }}
         >
           <StatCard 
-            title="MISSED TODAY" 
+            title={t('missedToday')} 
             value={user.dailyLogs.find(l => l.date === new Date().toISOString().split('T')[0])?.missed || 0} 
             icon={AlertCircle} 
             color={user.dailyLogs.find(l => l.date === new Date().toISOString().split('T')[0])?.missed > 0 ? "#ef4444" : "#004b34"} 
@@ -127,8 +129,8 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
       </div>
 
       <div className="section-header">
-        <h3 className="section-title">Daily Qaza Tracker</h3>
-        <button className="text-btn" onClick={() => setShowMissedModal(true)}>Add Extra Qaza +</button>
+        <h3 className="section-title">{t('dailyQazaTracker')}</h3>
+        <button className="text-btn" onClick={() => setShowMissedModal(true)}>{t('addExtra')}</button>
       </div>
 
       <div className="prayer-tracker-list">
@@ -145,8 +147,8 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
                   <Icon size={20} />
                 </div>
                 <div className="prayer-text">
-                  <span className="prayer-name">{prayerInfos[prayer].name} <span style={{fontSize: '0.7rem', color: 'var(--primary)', marginLeft: '4px'}}>ℹ️ Tap for rules</span></span>
-                  <span className="prayer-count">Remaining: {(stats.breakdown[prayer].total - stats.breakdown[prayer].completed).toLocaleString()}</span>
+                  <span className="prayer-name">{t(prayer)} <span style={{fontSize: '0.7rem', color: 'var(--primary)', marginInlineStart: '4px'}}>ℹ️ {t('tapRules')}</span></span>
+                  <span className="prayer-count">{t('remaining')}: {(stats.breakdown[prayer].total - stats.breakdown[prayer].completed).toLocaleString()}</span>
                 </div>
               </div>
               <div className="prayer-actions" style={{ display: 'flex', gap: '8px' }}>
@@ -171,26 +173,26 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
 
       {activePopup && (
         <div className="witr-popup-overlay" onClick={() => setActivePopup(null)}>
-          <div className="witr-rules-card" onClick={e => e.stopPropagation()}>
-            <h3>Key Rules for Qaza {prayerInfos[activePopup].name}</h3>
+          <div className="witr-rules-card" onClick={e => e.stopPropagation()} style={{ textAlign: isRTL ? 'right' : 'left' }}>
+            <h3>{t('rulesTitle')} {t(activePopup)}</h3>
             
             {activePopup === 'witr' ? (
-              <ul className="witr-rules-list">
-                <li><strong>The Intent (Niyyah):</strong> "I am performing the first/earliest Witr prayer that I missed."</li>
-                <li><strong>Rak'ats to Perform:</strong> 3 Wajib Rak'ats.</li>
-                <li><strong>Du'a-e-Qunoot:</strong> Must recite in the 3rd Rak'at. If forgotten, say <i>"Rabbana Atina..."</i> or <i>"Allahummaghfir-li"</i> 3 times.</li>
-                <li><strong>Sunnahs are not required:</strong> Only Fard and Witr are recorded as debt.</li>
+              <ul className="witr-rules-list" style={{ paddingInlineStart: '20px' }}>
+                <li><strong>{t('niyyahTitle')}</strong> {t('niyyahWitr')}</li>
+                <li><strong>{t('rakatsToPerform')}</strong> {t('witrRuleRakat')}</li>
+                <li><strong>{t('witrRuleQunoot')}</strong></li>
+                <li><strong>{t('sunnahNotRequired')}</strong> {t('sunnahDesc')}</li>
               </ul>
             ) : (
-              <ul className="witr-rules-list">
-                <li><strong>The Intent (Niyyah):</strong> "I am performing the first/earliest {prayerInfos[activePopup].name} prayer that I missed."</li>
-                <li><strong>Rak'ats to Perform:</strong> {prayerInfos[activePopup].rakats} {prayerInfos[activePopup].type} Rak'ats.</li>
-                <li><strong>Sunnahs are not required:</strong> You do not need to make up the Sunnah or Nafl prayers. Only Fard is recorded as debt.</li>
+              <ul className="witr-rules-list" style={{ paddingInlineStart: '20px' }}>
+                <li><strong>{t('niyyahTitle')}</strong> {t('niyyahGeneral', t(activePopup))}</li>
+                <li><strong>{t('rakatsToPerform')}</strong> {t('generalRuleRakat', [prayerInfos[activePopup].rakats, prayerInfos[activePopup].type])}</li>
+                <li><strong>{t('sunnahNotRequired')}</strong> {t('sunnahDesc')}</li>
               </ul>
             )}
             
              <div style={{ marginTop: '24px', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-               Disappearing automatically...
+               {t('disappearingAuto')}
              </div>
           </div>
         </div>
@@ -200,22 +202,22 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
       {showMissedModal && (
         <div className="witr-popup-overlay" onClick={() => setShowMissedModal(false)}>
           <div className="witr-rules-card" onClick={e => e.stopPropagation()}>
-            <h3>Log Missed Prayer</h3>
+            <h3>{t('logMissedTitle')}</h3>
             <p style={{marginBottom: '16px', fontSize: '0.9rem', color: 'var(--text-muted)'}}>
-              Select a prayer you missed today to add it to your Qaza debt.
+              {t('logMissedDesc')}
             </p>
             <select 
               className="modern-input" 
-              style={{ padding: '12px', width: '100%', marginBottom: '20px', borderRadius: '8px', border: '1px solid var(--border)' }}
+              style={{ padding: '12px', width: '100%', marginBottom: '20px', borderRadius: '8px', border: '1px solid var(--border)', appearance: 'auto' }}
               value={selectedMissed}
               onChange={e => setSelectedMissed(e.target.value)}
             >
-              <option value="fajr">Fajr</option>
-              <option value="zuhr">Zuhar</option>
-              <option value="asr">Asr</option>
-              <option value="maghrib">Maghrib</option>
-              <option value="isha">Isha</option>
-              <option value="witr">Witr</option>
+              <option value="fajr">{t('fajr')}</option>
+              <option value="zuhr">{t('zuhr')}</option>
+              <option value="asr">{t('asr')}</option>
+              <option value="maghrib">{t('maghrib')}</option>
+              <option value="isha">{t('isha')}</option>
+              <option value="witr">{t('witr')}</option>
             </select>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button 
@@ -223,7 +225,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
                 style={{ flex: 1, backgroundColor: 'transparent', border: '1px solid var(--border)', color: 'var(--text-main)', marginTop: 0, boxShadow: 'none' }}
                 onClick={() => setShowMissedModal(false)}
               >
-                Cancel
+                {t('cancel')}
               </button>
               <button 
                 className="calculate-btn" 
@@ -233,7 +235,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
                   setShowMissedModal(false);
                 }}
               >
-                Add to Debt
+                {t('addToDebt')}
               </button>
             </div>
           </div>
@@ -244,10 +246,9 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
       {showPerformMissedModal && (
         <div className="witr-popup-overlay" onClick={() => setShowPerformMissedModal(false)}>
           <div className="witr-rules-card" onClick={e => e.stopPropagation()}>
-            <h3>Perform Missed Prayer?</h3>
+            <h3>{t('performMissedTitle')}</h3>
             <p style={{marginBottom: '20px', fontSize: '0.95rem', color: 'var(--text-main)', lineHeight: 1.5}}>
-              Have you performed one of the prayers you missed today?<br/><br/>
-              Selecting <strong>Yes</strong> will clear it from your Missed Today box.
+              {t('performMissedDesc')}
             </p>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button 
@@ -255,7 +256,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
                 style={{ flex: 1, backgroundColor: 'transparent', border: '1px solid var(--border)', color: 'var(--text-main)', marginTop: 0, boxShadow: 'none' }}
                 onClick={() => setShowPerformMissedModal(false)}
               >
-                Not yet
+                {t('notYet')}
               </button>
               <button 
                 className="calculate-btn" 
@@ -265,7 +266,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
                   setShowPerformMissedModal(false);
                 }}
               >
-                Yes, Make it Up!
+                 {t('yesMakeUp')}
               </button>
             </div>
           </div>
@@ -279,28 +280,29 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
  * Journey / Stats View
  */
 export const Journey = ({ user }) => {
+  const { t } = useLanguage();
   const { stats, profile } = user;
   const prediction = calculateETA(user);
   
   const data = ['fajr', 'zuhr', 'asr', 'maghrib', 'isha', 'witr'].map(p => ({
-    name: p === 'zuhr' ? 'Zuhar' : p.charAt(0).toUpperCase() + p.slice(1),
+    name: t(p),
     completed: stats.breakdown[p].completed,
     remaining: stats.breakdown[p].total - stats.breakdown[p].completed
   }));
 
   const pieData = [
-    { name: 'Completed', value: stats.completed, color: '#004b34' },
-    { name: 'Remaining', value: stats.total - stats.completed, color: '#e6f4f1' }
+    { name: t('completed'), value: stats.completed, color: '#004b34' },
+    { name: t('remaining'), value: stats.total - stats.completed, color: '#e6f4f1' }
   ];
 
   return (
     <div className="journey-view container">
       <div className="premium-card journey-summary main-highlight">
         <div className="summary-text">
-          <span className="label">Your Journey to Restoration</span>
+          <span className="label">{t('journeyRestoration')}</span>
           <div className="main-value">
             {stats.total.toLocaleString()} 
-            <span className="sub-label">TOTAL PRAYERS</span>
+            <span className="sub-label">{t('totalPrayers')}</span>
           </div>
           <div className="eta-badge" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: '12px 16px', borderRadius: '12px', background: 'rgba(0,0,0,0.15)' }}>
             {prediction.isComplete ? (
@@ -309,10 +311,10 @@ export const Journey = ({ user }) => {
                <>
                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 'bold' }}>
                    <Clock size={16} />
-                   <span>Target: {prediction.dateStr}</span>
+                   <span>{t('targetDate')} {prediction.dateStr}</span>
                  </div>
                  <span style={{ fontSize: '0.8rem', marginTop: '6px', opacity: 0.9 }}>
-                   {prediction.timeStr} left • {prediction.avgPhrase}
+                   {prediction.timeStr} {t('left')} • {prediction.avgPhrase}
                  </span>
                </>
             )}
@@ -322,21 +324,21 @@ export const Journey = ({ user }) => {
 
       <div className="calculation-cards">
         <div className="premium-card mini-card">
-           <span className="mini-label">BALAGHAT YEAR</span>
+           <span className="mini-label">{t('balaghatYear')}</span>
            <span className="mini-value">{profile.balaghatYear}</span>
         </div>
         <div className="premium-card mini-card">
-           <span className="mini-label">REGULAR PRAYER</span>
+           <span className="mini-label">{t('regPrayerLabel')}</span>
            <span className="mini-value">{profile.startYear}</span>
         </div>
         <div className="premium-card mini-card">
-           <span className="mini-label">QAZA PERIOD</span>
-           <span className="mini-value">{profile.qazaYears} Years</span>
+           <span className="mini-label">{t('qazaPeriod')}</span>
+           <span className="mini-value">{profile.qazaYears} {profile.qazaYears === 1 ? t('year') : t('years')}</span>
         </div>
       </div>
 
       <div className="section-header">
-        <h3 className="section-title">Namaz Breakdown</h3>
+        <h3 className="section-title">{t('namazBreakdown')}</h3>
       </div>
 
       <div className="chart-container premium-card">

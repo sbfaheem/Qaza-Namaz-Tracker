@@ -1,6 +1,9 @@
-import { Home, PlusCircle, BarChart2, Settings, FileText } from 'lucide-react';
+import { Home, PlusCircle, BarChart2, Settings, FileText, Globe } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export const Navbar = ({ currentUserId }) => {
+  const { language, setLanguage, t } = useLanguage();
+  
   return (
     <nav className="navbar container">
       <div className="nav-header">
@@ -11,10 +14,30 @@ export const Navbar = ({ currentUserId }) => {
              <path d="M12 12L20 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
              <path d="M12 12L4 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
            </svg>
-           <h1 className="brand-name">Qaza Namaz Tracker</h1>
+           <h1 className="brand-name">{t('brandName')}</h1>
         </div>
-        <div className="user-profile">
-          <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUserId || 'guest'}`} alt="avatar" className="avatar" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button 
+            className="lang-toggle"
+            onClick={() => setLanguage(language === 'en' ? 'ur' : 'en')}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '6px', 
+              fontSize: '0.8rem', 
+              padding: '6px 12px', 
+              borderRadius: '20px', 
+              background: 'var(--secondary)',
+              color: 'var(--primary)',
+              fontWeight: 'bold'
+            }}
+          >
+            <Globe size={14} />
+            {language === 'en' ? 'اردو' : 'English'}
+          </button>
+          <div className="user-profile">
+            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUserId || 'guest'}`} alt="avatar" className="avatar" />
+          </div>
         </div>
       </div>
     </nav>
@@ -22,12 +45,13 @@ export const Navbar = ({ currentUserId }) => {
 };
 
 export const BottomNav = ({ activeTab, setActiveTab }) => {
+  const { t } = useLanguage();
   const tabs = [
-    { id: 'sanctuary', label: 'Sanctuary', icon: Home },
-    { id: 'log', label: 'Log', icon: PlusCircle },
-    { id: 'report', label: 'Report', icon: FileText },
-    { id: 'journey', label: 'Journey', icon: BarChart2 },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'sanctuary', label: t('navSanctuary'), icon: Home },
+    { id: 'log', label: t('navLog'), icon: PlusCircle },
+    { id: 'report', label: t('navReport'), icon: FileText },
+    { id: 'journey', label: t('navJourney'), icon: BarChart2 },
+    { id: 'settings', label: t('navSettings'), icon: Settings },
   ];
 
   return (

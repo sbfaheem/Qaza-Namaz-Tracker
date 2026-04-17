@@ -5,13 +5,15 @@ import { Onboarding } from './components/Onboarding';
 import { Navbar, BottomNav } from './components/Navigation';
 import { Dashboard, Journey } from './components/Views';
 import { ReportView } from './components/ReportView';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { fetchUserData, initializeUserRecord, persistUserData } from './utils/firestore';
 import { downloadQazaReport } from './utils/export';
 import { getRandomQuote } from './utils/quotes';
 import './App.css';
 
-function App() {
+function AppContent() {
   const { currentUser: authUser, logout } = useAuth();
+  const { t } = useLanguage();
   const [userData, setUserData] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
   const [activeTab, setActiveTab] = useState('sanctuary');
@@ -168,7 +170,7 @@ function App() {
 
   // State 2: Logged In, but Loading Database
   if (loadingData) {
-    return <div className="container" style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>Loading Profile...</div>;
+    return <div className="container" style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>{t('processing')}</div>;
   }
 
   // State 3: Logged In, NO Profile (Needs Onboarding)
@@ -195,13 +197,13 @@ function App() {
         {activeTab === 'report' && <ReportView user={userData} />}
         {activeTab === 'settings' && (
           <div className="settings-view container">
-            <h2 className="section-title">Settings</h2>
+            <h2 className="section-title">{t('navSettings')}</h2>
             <div className="premium-card">
               <div className="settings-profile">
                 <img src={authUser.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${authUser.uid}`} alt="avatar" className="settings-avatar" />
                 <div className="profile-details">
                    <h3>{userData.profile.name || authUser.displayName || 'Anonymous User'}</h3>
-                   <p>{userData.profile.gender} • Joined {new Date(userData.profile.dob).getFullYear()}</p>
+                   <p>{t(userData.profile.gender.toLowerCase())} • {t('joined')} {new Date(userData.profile.dob).getFullYear()}</p>
                    <p style={{fontSize: '0.8rem', marginTop: '4px', textTransform: 'none'}}>{authUser.email}</p>
                 </div>
               </div>
@@ -214,16 +216,16 @@ function App() {
               }}>
                 <div className="action-icon">🌓</div>
                 <div className="action-info">
-                  <span className="action-title">Toggle Dark Mode</span>
-                  <span className="action-desc">Switch between light and dark themes</span>
+                  <span className="action-title">{t('toggleDark')}</span>
+                  <span className="action-desc">{t('toggleDarkDesc')}</span>
                 </div>
               </button>
 
               <button className="premium-card action-item" style={{ border: '1px solid #ef4444' }} onClick={logout}>
                 <div className="action-icon">🚪</div>
                 <div className="action-info">
-                  <span className="action-title" style={{ color: '#ef4444' }}>Sign Out</span>
-                  <span className="action-desc">Log out of your account</span>
+                  <span className="action-title" style={{ color: '#ef4444' }}>{t('signOut')}</span>
+                  <span className="action-desc">{t('signOutDesc')}</span>
                 </div>
               </button>
             </div>
@@ -231,15 +233,16 @@ function App() {
         )}
         {activeTab === 'log' && (
           <div className="container">
-             <h2 className="section-title">Recent Activity</h2>
+             <h2 className="section-title">{t('navLog')}</h2>
              <div className="premium-card">
                {userData.dailyLogs.length === 0 ? (
-                 <p>No activity yet. Start logging from the Sanctuary!</p>
+                 <p>{t('noActivity')}</p>
                ) : (
                  userData.dailyLogs.slice().reverse().map((log, i) => (
-                   <div key={i} className="log-entry" style={{ padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
-                     <strong>{log.date}</strong>: {log.prayers.length} prayers logged
-                   </div>
+                    <div key={i} className="log-entry" style={{ padding: '12px 0', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
+                      <strong>{log.date}</strong>
+                      <span>{log.prayers.length} {t('completedShort')}</span>
+                    </div>
                  ))
                )}
              </div>
@@ -253,5 +256,15 @@ function App() {
     </div>
   );
 }
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
+  );
+}
+
+export default App;
 
 export default App;

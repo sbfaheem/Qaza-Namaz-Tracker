@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   CheckCircle, 
   Clock, 
@@ -9,8 +8,10 @@ import {
   Heart
 } from 'lucide-react';
 import { downloadQazaReport } from '../utils/export';
+import { useLanguage } from '../context/LanguageContext';
 
 export const ReportView = ({ user }) => {
+  const { t, isRTL } = useLanguage();
   const { stats, dailyLogs, profile } = user;
   const today = new Date().toISOString().split('T')[0];
   
@@ -26,9 +27,9 @@ export const ReportView = ({ user }) => {
   // Status Logic for Table
   const getStatus = (comp, tot) => {
     const ratio = comp / tot;
-    if (ratio >= 0.9) return { label: 'Near Completion', color: '#22c55e' };
-    if (ratio >= 0.4) return { label: 'Moderate', color: '#F59E0B' };
-    return { label: 'High Remaining', color: '#EF4444' };
+    if (ratio >= 0.9) return { label: t('statusNear'), color: '#22c55e' };
+    if (ratio >= 0.4) return { label: t('statusModerate'), color: '#F59E0B' };
+    return { label: t('statusHigh'), color: '#EF4444' };
   };
 
   // Activity History (Last 14 days)
@@ -45,15 +46,15 @@ export const ReportView = ({ user }) => {
   }
 
   return (
-    <div className="report-view container">
-      <div className="section-header" style={{ marginBottom: '24px' }}>
+    <div className="report-view container" style={{ textAlign: isRTL ? 'right' : 'left' }}>
+      <div className="section-header" style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2 className="section-title">Qaza Namaz Progress Report</h2>
-          <p className="section-subtitle">Track your journey towards consistency</p>
+          <h2 className="section-title">{t('progressReportTitle')}</h2>
+          <p className="section-subtitle">{t('progressReportSub')}</p>
         </div>
-        <button className="calculate-btn" onClick={() => downloadQazaReport(user)} style={{ marginTop: 0 }}>
-          <FileText size={18} style={{ marginRight: '8px' }} />
-          Download PDF
+        <button className="calculate-btn" onClick={() => downloadQazaReport(user, t, isRTL)} style={{ marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <FileText size={18} />
+          {t('downloadPdf')}
         </button>
       </div>
 
@@ -62,51 +63,51 @@ export const ReportView = ({ user }) => {
         <div className="premium-card text-center" style={{ borderBottom: '4px solid #22c55e' }}>
           <div style={{ color: '#22c55e', marginBottom: '8px' }}><CheckCircle size={24} /></div>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{completed.toLocaleString()}</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>COMPLETED</div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('completed')}</div>
         </div>
         <div className="premium-card text-center" style={{ borderBottom: '4px solid #ef4444' }}>
           <div style={{ color: '#ef4444', marginBottom: '8px' }}><AlertCircle size={24} /></div>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{remaining.toLocaleString()}</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>REMAINING</div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('remaining')}</div>
         </div>
         <div className="premium-card text-center" style={{ borderBottom: '4px solid #F59E0B' }}>
           <div style={{ color: '#F59E0B', marginBottom: '8px' }}><TrendingUp size={24} /></div>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{progressPercent}%</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>PROGRESS</div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('progress')}</div>
         </div>
         <div className="premium-card text-center" style={{ borderBottom: '4px solid #3B82F6' }}>
           <div style={{ color: '#3B82F6', marginBottom: '8px' }}><Clock size={24} /></div>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{todaysCount}</div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>TODAY</div>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('today')}</div>
         </div>
       </div>
 
       {/* Progress Visualization */}
       <div className="premium-card" style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-          <span style={{ fontWeight: '600' }}>Overall Journey</span>
+          <span style={{ fontWeight: '600' }}>{t('overallJourney')}</span>
           <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{progressPercent}%</span>
         </div>
         <div style={{ height: '12px', background: '#e5e7eb', borderRadius: '6px', overflow: 'hidden', display: 'flex' }}>
           <div style={{ width: `${progressPercent}%`, background: '#22c55e', height: '100%' }}></div>
           <div style={{ flex: 1, background: '#ef4444', height: '100%', opacity: 0.2 }}></div>
         </div>
-        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '12px' }}>
-          You have cleared <strong>{completed.toLocaleString()}</strong> out of <strong>{total.toLocaleString()}</strong> total missed prayers. Keep it up!
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '12px' }}>
+          {t('reportDesc', [completed.toLocaleString(), total.toLocaleString()])}
         </p>
       </div>
 
       {/* Namaz Breakdown Table */}
       <div className="premium-card" style={{ padding: '0', overflow: 'hidden', marginBottom: '24px' }}>
-        <div style={{ padding: '20px', borderBottom: '1px solid var(--border)', fontWeight: 'bold' }}>Detailed Breakdown</div>
+        <div style={{ padding: '20px', borderBottom: '1px solid var(--border)', fontWeight: 'bold' }}>{t('detailedBreakdown')}</div>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: isRTL ? 'right' : 'left' }}>
             <thead style={{ background: 'var(--bg-secondary)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
               <tr>
-                <th style={{ padding: '12px 20px' }}>PRAYER</th>
-                <th style={{ padding: '12px 20px' }}>COMPLETED</th>
-                <th style={{ padding: '12px 20px' }}>REMAINING</th>
-                <th style={{ padding: '12px 20px' }}>STATUS</th>
+                <th style={{ padding: '12px 20px' }}>{t('colPrayer')}</th>
+                <th style={{ padding: '12px 20px' }}>{t('colCompleted')}</th>
+                <th style={{ padding: '12px 20px' }}>{t('colRemaining')}</th>
+                <th style={{ padding: '12px 20px' }}>{t('colStatus')}</th>
               </tr>
             </thead>
             <tbody>
@@ -115,7 +116,7 @@ export const ReportView = ({ user }) => {
                 const status = getStatus(item.completed, item.total);
                 return (
                   <tr key={key} style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '14px 20px', fontWeight: '600', textTransform: 'capitalize' }}>{key}</td>
+                    <td style={{ padding: '14px 20px', fontWeight: '600', textTransform: 'capitalize' }}>{t(key)}</td>
                     <td style={{ padding: '14px 20px' }}>{item.completed.toLocaleString()}</td>
                     <td style={{ padding: '14px 20px' }}>{(item.total - item.completed).toLocaleString()}</td>
                     <td style={{ padding: '14px 20px' }}>
@@ -143,9 +144,9 @@ export const ReportView = ({ user }) => {
         <div className="premium-card">
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', gap: '8px' }}>
             <Calendar size={18} />
-            <span style={{ fontWeight: 'bold' }}>Active Consistency (Last 14 Days)</span>
+            <span style={{ fontWeight: 'bold' }}>{t('activeConsistency')}</span>
           </div>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
             {last14Days.map((day, i) => (
               <div 
                 key={i} 
@@ -161,7 +162,7 @@ export const ReportView = ({ user }) => {
             ))}
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '12px' }}>
-            Green boxes represent days where you successfully logged Qaza prayers.
+            {t('consistencyDesc')}
           </p>
         </div>
 
@@ -169,13 +170,13 @@ export const ReportView = ({ user }) => {
         <div className="premium-card" style={{ background: 'var(--primary)', color: 'white' }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px', gap: '8px' }}>
             <Heart size={18} />
-            <span style={{ fontWeight: 'bold' }}>Divine Motivation</span>
+            <span style={{ fontWeight: 'bold' }}>{t('divineMotivation')}</span>
           </div>
           <div style={{ fontSize: '1.1rem', fontStyle: 'italic', marginBottom: '12px' }}>
-            "Allah loves consistency in good deeds, even if they are small."
+            {t('motivationQuote')}
           </div>
           <p style={{ fontSize: '0.85rem', opacity: 0.9 }}>
-            Every single Qaza you complete is a weight lifted from your soul. Stay steadfast on this path of purification.
+            {t('motivationSub')}
           </p>
         </div>
       </div>
