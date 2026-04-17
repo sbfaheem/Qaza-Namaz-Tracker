@@ -252,7 +252,12 @@ function AppContent() {
 
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
       
-      {toastMessage && <div className="toast-container">{toastMessage}</div>}
+      {toastMessage && (
+        <div className="toast-container">
+          {toastMessage}
+          <div className="toast-timer-line"></div>
+        </div>
+      )}
     </div>
   );
 }
