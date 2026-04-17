@@ -1,4 +1,4 @@
-export const calculateETA = (user) => {
+export const calculateETA = (user, t) => {
   const { stats, dailyLogs } = user;
   const remaining = stats.total - stats.completed;
   if (remaining <= 0) return { isComplete: true, text: "Alhamdulillah, Completed!" };

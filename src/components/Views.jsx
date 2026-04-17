@@ -38,7 +38,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
 
   const { stats, profile } = user;
   const progress = ((stats.completed / stats.total) * 100).toFixed(1);
-  const prediction = calculateETA(user);
+  const prediction = calculateETA(user, t);
 
   const handlePrayerClick = (prayer) => {
     setActivePopup(prayer);
@@ -282,7 +282,7 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
 export const Journey = ({ user }) => {
   const { t } = useLanguage();
   const { stats, profile } = user;
-  const prediction = calculateETA(user);
+  const prediction = calculateETA(user, t);
   
   const data = ['fajr', 'zuhr', 'asr', 'maghrib', 'isha', 'witr'].map(p => ({
     name: t(p),
