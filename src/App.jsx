@@ -9,6 +9,7 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { fetchUserData, initializeUserRecord, persistUserData } from './utils/firestore';
 import { downloadQazaReport } from './utils/export';
 import { getRandomQuote } from './utils/quotes';
+import { ChevronDown } from 'lucide-react';
 import './App.css';
 
 function AppContent() {
@@ -18,6 +19,7 @@ function AppContent() {
   const [loadingData, setLoadingData] = useState(true);
   const [activeTab, setActiveTab] = useState('sanctuary');
   const [toastMessage, setToastMessage] = useState('');
+  const [expandedLog, setExpandedLog] = useState(null);
 
   const showQuote = () => {
     setToastMessage(getRandomQuote(language));
@@ -163,6 +165,20 @@ function AppContent() {
     }
   };
 
+  const getPrayerBreakdown = (prayers) => {
+    const counts = (prayers || []).reduce((acc, p) => {
+      acc[p] = (acc[p] || 0) + 1;
+      return acc;
+    }, {});
+    
+    const parts = Object.entries(counts).map(([type, count]) => {
+      return `${count} ${t(type)}`;
+    });
+    
+    if (parts.length === 0) return "";
+    return `(${parts.join(', ')})`;
+  };
+
   // State 1: Not Logged In
   if (!authUser) {
     return <AuthScreen />;
@@ -250,9 +266,23 @@ function AppContent() {
                  <p>{t('noActivity')}</p>
                ) : (
                  (userData.dailyLogs || []).slice().reverse().map((log, i) => (
-                    <div key={i} className="log-entry" style={{ padding: '12px 0', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
-                      <strong>{log.date}</strong>
-                      <span>{(log.prayers || []).length} {t('completedShort')}</span>
+                    <div 
+                      key={i} 
+                      className="log-entry-container"
+                      onClick={() => setExpandedLog(expandedLog === log.date ? null : log.date)}
+                    >
+                      <div className="log-entry-header" style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}>
+                        <strong>{log.date}</strong>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexDirection: isRTL ? 'row-reverse' : 'row' }}>
+                          <span>{(log.prayers || []).length} {t('completedShort')}</span>
+                          <ChevronDown size={16} className={`chevron-icon ${expandedLog === log.date ? 'expanded' : ''}`} />
+                        </div>
+                      </div>
+                      {expandedLog === log.date && (
+                        <div className="log-details" style={{ textAlign: isRTL ? 'right' : 'left' }}>
+                          {getPrayerBreakdown(log.prayers)}
+                        </div>
+                      )}
                     </div>
                  ))
                )}
