@@ -171,9 +171,10 @@ function AppContent() {
       return acc;
     }, {});
     
-    const parts = Object.entries(counts).map(([type, count]) => {
-      return `${count} ${t(type)}`;
-    });
+    const order = ['fajr', 'zuhr', 'asr', 'maghrib', 'isha', 'witr'];
+    const parts = order
+      .filter(p => counts[p] > 0)
+      .map(p => `${counts[p]} ${t(p)}`);
     
     if (parts.length === 0) return "";
     return `(${parts.join(', ')})`;
