@@ -32,6 +32,10 @@ export const ISLAMIC_QUOTES = [
     ur: "ہر قضا نماز آپ کو اللہ کے قریب کرتی ہے اور آپ کا فرض پورا کرتی ہے۔"
   },
   {
+    en: "Whoever forgets a prayer or sleeps through it, let him pray it when he remembers it; there is no other expiation for it. (Bukhari: 597)",
+    ur: "جو شخص کوئی نماز بھول جائے یا سوتا رہ جائے، تو جب یاد آئے اسے ادا کرے؛ اس کا اس کے علاوہ کوئی کفارہ نہیں۔ (بخاری: 597)"
+  },
+  {
     en: "Making up missed prayers is a path to forgiveness and soul purification.",
     ur: "چھوٹی ہوئی نمازوں کی ادائیگی مغفرت اور روح کی پاکیزگی کا راستہ ہے۔"
   }

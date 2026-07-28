@@ -671,3 +671,66 @@
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Not Logged Today Reminder Card */
+.not-logged-reminder-card {
+  margin-top: 16px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(251, 191, 36, 0.04) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 18px;
+  border-radius: 16px;
+  animation: slideDown 0.4s ease-out;
+}
+
+.reminder-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.reminder-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.18);
+  color: #d97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.reminder-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #b45309;
+  margin: 0;
+}
+
+[data-theme="dark"] .reminder-title {
+  color: #fbbf24;
+}
+
+.reminder-hadith-content {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  padding: 12px;
+  border-left: 3px solid #f59e0b;
+}
+
+[data-theme="dark"] .reminder-hadith-content {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+[dir="rtl"] .reminder-hadith-content {
+  border-left: none;
+  border-right: 3px solid #f59e0b;
+}
+
+.reminder-hadith-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-main);
+  margin: 0;
+}

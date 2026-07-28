@@ -63,6 +63,21 @@ function AppContent() {
     return () => { isMounted = false; };
   }, [authUser]);
 
+  useEffect(() => {
+    if (userData) {
+      const today = new Date().toISOString().split('T')[0];
+      const todayLog = userData.dailyLogs ? userData.dailyLogs.find(l => l.date === today) : null;
+      const todayCount = todayLog ? (todayLog.prayers || []).length : 0;
+      if (todayCount === 0) {
+        setToastMessage(`${t('notLoggedToday')} — ${t('qazaHadithReminder')}`);
+        const timer = setTimeout(() => {
+          setToastMessage('');
+        }, 10000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [userData, language, t]);
+
   const handleOnboardingComplete = async (userState) => {
     setLoadingData(true);
     try {

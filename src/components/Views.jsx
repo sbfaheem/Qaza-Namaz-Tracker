@@ -128,6 +128,22 @@ export const Dashboard = ({ user, onLogPrayer, onUndoPrayer, onAddMissed, onPerf
         </div>
       </div>
 
+      {((user.dailyLogs?.find(l => l.date === new Date().toISOString().split('T')[0])?.prayers || []).length === 0) && (
+        <div className="premium-card not-logged-reminder-card">
+          <div className="reminder-header">
+            <div className="reminder-icon-box">
+              <Clock size={20} />
+            </div>
+            <div className="reminder-title-area">
+              <h4 className="reminder-title">{t('notLoggedToday')}</h4>
+            </div>
+          </div>
+          <div className="reminder-hadith-content">
+            <p className="reminder-hadith-text">{t('qazaHadithReminder')}</p>
+          </div>
+        </div>
+      )}
+
       <div className="section-header">
         <h3 className="section-title">{t('dailyQazaTracker')}</h3>
         <button className="text-btn" onClick={() => setShowMissedModal(true)}>{t('addExtra')}</button>

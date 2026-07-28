@@ -61,6 +61,8 @@ export const translations = {
     witr: "Witr",
     tapRules: "Tap for rules",
     disappearingAuto: "Disappearing automatically...",
+    notLoggedToday: "Today You're Not Logged In Any Qaza Namaz Yet",
+    qazaHadithReminder: "Hadith: \"Whoever forgets a prayer or sleeps through it, let him pray it when he remembers it; there is no other expiation for it.\" (Bukhari: 597 / Muslim: 684). Making up your Qaza Namaz regularly purifies your soul and fulfills your obligation to Allah.",
     
     // Modals
     logMissedTitle: "Log Missed Prayer",
@@ -197,6 +199,8 @@ export const translations = {
     witr: "وتر",
     tapRules: "اصولوں کے لیے کلک کریں",
     disappearingAuto: "خود بخود غائب ہو رہا ہے...",
+    notLoggedToday: "آج آپ نے ابھی تک کوئی قضا نماز درج نہیں کی",
+    qazaHadithReminder: "حدیث: \"جو شخص کوئی نماز بھول جائے یا سوتا رہ جائے، تو جب یاد آئے اسے ادا کرے۔\" (بخاری: 597 / مسلم: 684)۔ باقاعدگی سے قضا نماز ادا کرنا آپ کی روح کو پاک کرتا ہے اور اللہ کا فرض پورا کرتا ہے۔",
     
     // Modals
     logMissedTitle: "آج کی قضا درج کریں",
